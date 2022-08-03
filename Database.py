@@ -5,7 +5,6 @@ from BestFit import BestFit
 from Algorithm import Algorithm
 from WorstFit import WorstFit
 from FirstFit import FirstFit
-from numba import cuda, jit
 from search import best_fit
 from write_seats_into_database import write_seats_into_database
 
@@ -92,12 +91,12 @@ class Database:
         return avg_scores
 
     @staticmethod
-    @cuda.jit
     def generate_data_fits(table_name: str, seats: np.ndarray, groups: np.array, max_group_size: int,
                            shifting: list) -> None:
         groups_1 = groups[:int(len(groups) / 3)]
         groups_2 = groups[int(len(groups) / 3):int(len(groups) / 3) * 2]
         groups_3 = groups[int(len(groups) / 3) * 2:]
+
 
         pos = cuda.grid(1)
         if pos < len(groups_1):
@@ -125,7 +124,6 @@ class Database:
             print(f"{pos + len(groups_1) + len(groups_2)}/{len(groups)}")
 
     @staticmethod
-    @cuda.jit
     def generate_data_bf(table_name: str, seats: np.ndarray, shifting: np.array, groups: np.array,
                          max_group_size: int):
         pos = cuda.grid(1)

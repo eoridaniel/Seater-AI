@@ -1,18 +1,16 @@
-import numba
 import numpy as np
 import math
 from FreeSeats import FreeSeats
-import numba as nb
+
 
 __IS_NOT_FREE = [np.True_, None]
 
 
-@nb.cuda.jit
 def isin(a, b):
-    out = nb.typed.List([1])
+    out = []
     for _ in range(len(a)):
         out.append(1)
-    for i in nb.prange(len(a)):
+    for i in len(a):
         if a[i] in b:
             out[i] = True
         else:
@@ -20,13 +18,12 @@ def isin(a, b):
     return out
 
 
-@nb.cuda.jit
+
 def __reserve(seats: np.ndarray, row: float, first_seat: float, required_seats: int) -> bool:
     seats[row, first_seat:first_seat + required_seats] = np.True_
     return True
 
 
-@nb.cuda.jit
 def __is_free(seats: np.ndarray, shifting: np.array, row: int, first_seat: int, required_seats: int) -> bool:
     col_len: int = len(seats)
     row_len: int = len(seats[0])
@@ -53,7 +50,7 @@ def __is_free(seats: np.ndarray, shifting: np.array, row: int, first_seat: int, 
         return True
 
 
-@nb.cuda.jit
+
 def __search_free_seat_groups(seats: np.ndarray, shifting: np.array) -> np.array:
     free_seat_groups: np.array = np.array([])
     row_len: int = len([seats[0]])
@@ -75,7 +72,7 @@ def __search_free_seat_groups(seats: np.ndarray, shifting: np.array) -> np.array
     return free_seat_groups
 
 
-@nb.cuda.jit
+
 def best_fit(seats: np.ndarray, shifting: np.array, max_group_size: int, required_seats: int) -> bool:
     while required_seats > 0:
         free_seat_groups: np.array = __search_free_seat_groups(seats, shifting)
@@ -92,8 +89,6 @@ def best_fit(seats: np.ndarray, shifting: np.array, max_group_size: int, require
             continue
         return False
 
-
-@nb.cuda.jit
 def __search_best_seats(required_seats: int, free_seat_groups: np.array) -> FreeSeats:
     best_seats: FreeSeats = FreeSeats(math.inf, math.inf, math.inf)
     if len(free_seat_groups) > 0:
@@ -103,7 +98,6 @@ def __search_best_seats(required_seats: int, free_seat_groups: np.array) -> Free
     return best_seats
 
 
-@nb.cuda.jit
 def worst_fit(seats: np.ndarray, shifting: np.array, max_group_size: int, required_seats: int) -> bool:
     while required_seats > 0:
         free_seat_groups: np.array = __search_free_seat_groups(seats, shifting)
@@ -121,7 +115,6 @@ def worst_fit(seats: np.ndarray, shifting: np.array, max_group_size: int, requir
         return False
 
 
-@nb.cuda.jit
 def __search_worst_seats(required_seats: int, free_seat_groups: np.array) -> FreeSeats:
     worst_seats: FreeSeats = FreeSeats(0, 0, 0)
     if len(free_seat_groups) > 0:
@@ -131,7 +124,6 @@ def __search_worst_seats(required_seats: int, free_seat_groups: np.array) -> Fre
     return worst_seats
 
 
-@nb.cuda.jit
 def first_fit(seats: np.ndarray, shifting: np.array, max_group_size: int, required_seats: int) -> bool:
     row_len: int = len([seats[0]])
     col_len: int = len(seats)
