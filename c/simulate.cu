@@ -5,13 +5,11 @@
 #include <time.h>
 #include <math.h>
 #include <utility>
+#include "seat.c"
 
 #define THREAD_COUNT 1024
 
-struct Seat{
-    unsigned int val : 2;
-    // 0 not reserved, 1 reserved, 3 not seat 
-};
+
 
 class FreeSeats{
     public:
