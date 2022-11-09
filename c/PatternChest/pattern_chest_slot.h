@@ -8,4 +8,6 @@ class PatternChestSlot{
         PatternChestSlot(const unsigned pattern_size, const Pattern* patterns);
         const Pattern* get_pattern(unsigned idx);
         const unsigned get_pattern_size();
+        void add_pattern(Pattern pattern);
+        bool is_exists(Pattern pattern);
 };

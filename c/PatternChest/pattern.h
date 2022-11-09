@@ -1,18 +1,21 @@
 #include "seat.c"
+#include <iostream>
 
 enum type {TopRightCorner, TopLeftCorner, TopSide, LeftSide, Middle, RightSide, BottomRightCorner, BottomLeftSide, BottomSide};
-
+using namespace std;
 class Pattern{
     private:
-        type patter_type;
         unsigned row_len;
         unsigned col_len;
+        type pattern_type;
+        unsigned size;
         const Seat * pattern;
     public:
-        Pattern(unsigned row_len, unsigned col_len, Seat* pattern);
-        unsigned get_row_len();
-        unsigned get_col_len();
-        const Seat* get_pattern();
-        type get_pattren_type();
+        Pattern(unsigned row_len, unsigned col_len, type pattern_type, unsigned size, Seat* pattern);
+        unsigned get_size();
+        type get_pattern_type();
         bool is_free(Seat* seats);
+        bool equal(Seat* seats);
+        Pattern* rotate();
+        void show();
 };
