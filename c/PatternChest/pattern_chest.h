@@ -2,7 +2,7 @@
 
 class PatternChest{
     private:
-        const unsigned size; //count of slots
+        unsigned size; //count of slots
         const PatternChestSlot* slots;
 
         void insert_into_slot(const unsigned size, Pattern pattern);

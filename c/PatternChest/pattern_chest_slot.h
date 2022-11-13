@@ -2,12 +2,14 @@
 
 class PatternChestSlot{
     private:
-        const unsigned pattern_size;
-        const Pattern* patterns;
+        unsigned pattern_size;
+        Pattern* patterns;
+        unsigned size;
     public:
-        PatternChestSlot(const unsigned pattern_size, const Pattern* patterns);
-        const Pattern* get_pattern(unsigned idx);
-        const unsigned get_pattern_size();
-        void add_pattern(Pattern pattern);
+        PatternChestSlot(unsigned pattern_size);
+        Pattern* get_pattern(unsigned idx);
+        unsigned get_pattern_size();
+        void add_pattern(Pattern* pattern);
         bool is_exists(Pattern pattern);
+        void show();
 };
