@@ -31,7 +31,14 @@ Pattern* Pattern::rotate(){
     Seat* rotated = (Seat*)malloc(size * sizeof(Seat));
     for(unsigned i = 0; i < this->col_len; i++)
         for(unsigned j = 0;j < this->row_len; j++)
-            rotated [i * this->row_len + j].val = this->pattern[j * this->row_len + i].val;
+            rotated [j * this->col_len + i].val = this->pattern[ i * this->row_len + j].val;
+    unsigned tmp = 0;
+        for(unsigned j = 0;j < this->row_len; j++)
+         for(unsigned i = 0; i < (this->col_len / 2); i++){
+            tmp = rotated[((j+1) * this->col_len - 1) - i].val;
+            rotated [((j + 1) * this->col_len - 1) - i].val = rotated[j * this->col_len + i].val;
+            rotated[ j * this->col_len + i].val = tmp;
+        }
     return new Pattern(this->col_len, this->row_len, this->pattern_type, this->size, rotated);
 }
 void Pattern::show(){
